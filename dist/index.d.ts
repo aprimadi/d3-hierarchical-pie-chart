@@ -78,3 +78,4 @@ declare class HierarchicalPieChart {
     private getStopAngle;
     private getLevel;
 }
+export default HierarchicalPieChart;

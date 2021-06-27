@@ -146,7 +146,7 @@ var HierarchicalPieChart = /** @class */ (function () {
                     name: d.name,
                     description: d.description,
                     value: d.value,
-                    level: level(t)
+                    level: level(t),
                 });
             };
         };
@@ -229,7 +229,7 @@ var HierarchicalPieChart = /** @class */ (function () {
             name: data.name,
             description: data.description,
             value: data.value,
-            level: level
+            level: level,
         });
         var angle = startAngle;
         for (var _i = 0, _a = data.children; _i < _a.length; _i++) {
@@ -255,3 +255,4 @@ var HierarchicalPieChart = /** @class */ (function () {
     };
     return HierarchicalPieChart;
 }());
+export default HierarchicalPieChart;

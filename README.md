@@ -10,6 +10,8 @@ dependencies directly via npm or include it in your HTML. The class assumes
 that d3 dependencies will be injected into the class via the constructor, i.e.:
 
 ```javascript
+import HierarchicalPieChart from 'd3-hierarchical-pie-chart'
+
 const chart = new HierarchicalPieChart(d3, data)
 chart.render(document.querySelector("#chart"))
 ```
@@ -57,6 +59,40 @@ For more examples, see `examples/` folder.
 ## Supported d3 versions
 
 This library supports d3 version 3 to version 5.
+
+## Advanced Usage
+
+Custom width and height (default 400px x 400px)
+
+```javascript
+const chart = new HierarchicalPieChart(d3, data, { plotWidth: 600, plotHeight: 600})
+```
+
+Custom legend
+
+```javascript
+const legendFn = (d) => {
+  const name = d.name || "&nbsp;"
+  const description = d.description || "&nbsp;"
+  return "<h2>" + name + "</h2><p>" + description + "</p>"
+}
+const chart = new HierarchicalPieChart(d3, data, { legendFn: legendFn })
+```
+
+Custom label function (a label is the tooltip that appears when hovering the chart)
+
+```javascript
+const labelFn = (d) => { return d.name + ": " + d.description }
+const chart = new HierarchicalPieChart(d3, data, { labelFn: labelFn })
+```
+
+Custom color scheme
+
+```javascript
+const color = d3.scaleOrdinal(d3.schemeCategory10)
+const colorFn = (d) => { return color(d.name) }
+const chart = new HierarchicalPieChart(d3, data, { colorFn: colorFn })
+```
 
 ## Credits
 

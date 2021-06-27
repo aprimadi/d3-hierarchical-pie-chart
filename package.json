@@ -2,8 +2,33 @@
   "name": "d3-hierarchical-pie-chart",
   "author": "Armin Primadi",
   "version": "1.0.0",
-  "main": "index.js",
+  "type": "module",
+  "main": "dist/es5/index.js",
+  "module": "dist/es6/index.js",
+  "types": "dist/index.d.ts",
   "devDependencies": {
     "typescript": "^4.3.4"
-  }
+  },
+  "description": "d3-hierarchical-pie-chart =========================",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "compile": "rm -Rf dist && npx tsc && npx tsc --build tsconfig.es5.json && npx tsc --declaration --emitDeclarationOnly --outDir ./dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aprimadi/d3-hierarchical-pie-chart.git"
+  },
+  "keywords": [
+    "d3",
+    "hierarchical-pie-chart",
+    "pie-chart"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aprimadi/d3-hierarchical-pie-chart/issues"
+  },
+  "homepage": "https://github.com/aprimadi/d3-hierarchical-pie-chart#readme"
 }
