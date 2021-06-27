@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8" />
+<style>
+html {
+  font-family: Century Gothic, Arial, Helvetica;
+  font-size: 1em;
+}
+body {
+  padding: 10px;
+}
+#chart {
+  position: relative;
+  margin: 0 auto;
+  width: 400px;
+}
+#chart .chart-legend {
+  text-align: center;
+}
+</style>
+<head>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script type="text/javascript" src="data.js"></script>
+  <script type="text/javascript" src="../dist/index.js"></script>
+  <script type="text/javascript">
+    function init() {
+      const chart = new HierarchicalPieChart(d3, data)
+      chart.render(document.querySelector("#chart"))
+    }
+
+    window.onload = init
+  </script>
+</head>
+<body>
+  <p>Click on a segment to get a zoomed-in view of its children.<br />Check out the full example <a href="http://www.andreas-dewes.de/code_is_beautiful" target="_blank">here</a>.</p>
+  <div id="chart"></div>
+</body>
+</html>
+

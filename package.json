@@ -1,0 +1,9 @@
+{
+  "name": "d3-hierarchical-pie-chart",
+  "author": "Armin Primadi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "typescript": "^4.3.4"
+  }
+}
