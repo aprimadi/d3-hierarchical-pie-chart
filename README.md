@@ -11,6 +11,7 @@ that d3 dependencies will be injected into the class via the constructor, i.e.:
 
 ```javascript
 import HierarchicalPieChart from 'd3-hierarchical-pie-chart'
+import * as d3 from 'd3'
 
 const chart = new HierarchicalPieChart(d3, data)
 chart.render(document.querySelector("#chart"))
