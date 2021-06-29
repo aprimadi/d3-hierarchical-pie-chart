@@ -3,6 +3,10 @@ d3-hierarchical-pie-chart
 
 d3 library for rendering hierarchical pie chart.
 
+## Demo
+
+![](https://github.com/aprimadi/d3-hierarchical-pie-chart/blob/main/examples/demo.gif)
+
 ## Usage
 
 This library has no d3 dependencies, instead you have to install d3 
