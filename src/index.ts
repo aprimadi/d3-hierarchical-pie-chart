@@ -139,11 +139,13 @@ class HierarchicalPieChart {
     
     const maxLevel = this.maxLevel(this.data)
 
-    var svg = this.d3.select(plotEl).append("svg")
+    var svg = this.d3.select(plotEl).selectAll("svg")
+      .data([null])
+      .join("svg")
         .attr("width", width)
         .attr("height", height)
         .append("g")
-        .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")")
+          .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")")
           
     var thickness = width / 2.0 / (maxLevel + 2) * 1.1
         

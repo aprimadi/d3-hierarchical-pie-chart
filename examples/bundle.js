@@ -98,7 +98,9 @@ var HierarchicalPieChart = /** @class */ (function () {
         var width = this.plotWidth;
         var height = this.plotHeight;
         var maxLevel = this.maxLevel(this.data);
-        var svg = this.d3.select(plotEl).append("svg")
+        var svg = this.d3.select(plotEl).selectAll("svg")
+            .data([null])
+            .join("svg")
             .attr("width", width)
             .attr("height", height)
             .append("g")

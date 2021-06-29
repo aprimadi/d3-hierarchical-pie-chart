@@ -1,7 +1,7 @@
 {
   "name": "d3-hierarchical-pie-chart",
   "author": "Armin Primadi",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
   "main": "dist/es5/index.js",
   "module": "dist/es6/index.js",

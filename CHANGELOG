@@ -11,8 +11,9 @@
 - Allow top or bottom legend
 - Support d3 v6
 
-HEAD
-====
+1.0.2
+=====
 
 - Adding demo to README
+- Fix bugs when rendering multiple times
 
