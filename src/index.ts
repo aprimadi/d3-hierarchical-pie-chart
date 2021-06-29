@@ -144,8 +144,11 @@ class HierarchicalPieChart {
       .join("svg")
         .attr("width", width)
         .attr("height", height)
-        .append("g")
-          .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")")
+
+    var group = svg.selectAll("g")
+      .data([null])
+      .join("g")
+        .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")")
           
     var thickness = width / 2.0 / (maxLevel + 2) * 1.1
         
@@ -155,15 +158,11 @@ class HierarchicalPieChart {
       .innerRadius((d: ArcDatum) => 1.1 * d.level * thickness)
       .outerRadius((d: ArcDatum) => (1.1 * d.level + 1) * thickness)
 
-    var slices = svg.selectAll(".form")
-      .data(() => this.arcData)
-      .enter()
-      .append("g")
-
-    slices.append("path")
-      .attr("d", arc)
-      .style("fill", (d: ArcDatum) => this.colorFn(d))
-      .attr("class", "form")
+    var slices = group.selectAll("path")
+      .data(this.arcData)
+      .join("path")
+        .attr("d", arc)
+        .style("fill", (d: ArcDatum) => this.colorFn(d))
 
     this.d3on(slices, "click", this.onClickArc.bind(this, plotEl, arc))
 
@@ -250,7 +249,7 @@ class HierarchicalPieChart {
       targetArc = this.arcClickHistory.previous()
     }
     if (revert) {
-      svg.selectAll(".form")
+      svg.selectAll("path")
         .filter(function (b: ArcDatum) {
           return (
             b.startAngle >= targetArc.startAngle && 
@@ -260,7 +259,7 @@ class HierarchicalPieChart {
         })
         .transition().duration(1000).style("opacity", "1").attr("pointer-events", "all")
     } else {
-      svg.selectAll(".form")
+      svg.selectAll("path")
         .filter(function (b: ArcDatum) {
           return (
             b.startAngle < d.startAngle || b.stopAngle > d.stopAngle || 
@@ -269,7 +268,7 @@ class HierarchicalPieChart {
         })
         .transition().duration(1000).style("opacity", "0").attr("pointer-events", "none")
     }
-    svg.selectAll(".form")
+    svg.selectAll("path")
       .filter(function(b: ArcDatum) {
         return (
           b.startAngle >= d.startAngle && 

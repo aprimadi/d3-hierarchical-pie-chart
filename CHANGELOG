@@ -17,3 +17,8 @@
 - Adding demo to README
 - Fix bugs when rendering multiple times
 
+1.0.3
+=====
+
+- Fix paths are rendered multiple times on re-render
+

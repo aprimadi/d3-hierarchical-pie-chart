@@ -99,8 +99,10 @@ var HierarchicalPieChart = /** @class */ (function () {
             .data([null])
             .join("svg")
             .attr("width", width)
-            .attr("height", height)
-            .append("g")
+            .attr("height", height);
+        var group = svg.selectAll("g")
+            .data([null])
+            .join("g")
             .attr("transform", "translate(" + width / 2 + "," + height * .52 + ")");
         var thickness = width / 2.0 / (maxLevel + 2) * 1.1;
         var arc = this.d3.arc()
@@ -108,14 +110,11 @@ var HierarchicalPieChart = /** @class */ (function () {
             .endAngle(function (d) { return d.stopAngle; })
             .innerRadius(function (d) { return 1.1 * d.level * thickness; })
             .outerRadius(function (d) { return (1.1 * d.level + 1) * thickness; });
-        var slices = svg.selectAll(".form")
-            .data(function () { return _this.arcData; })
-            .enter()
-            .append("g");
-        slices.append("path")
+        var slices = group.selectAll("path")
+            .data(this.arcData)
+            .join("path")
             .attr("d", arc)
-            .style("fill", function (d) { return _this.colorFn(d); })
-            .attr("class", "form");
+            .style("fill", function (d) { return _this.colorFn(d); });
         this.d3on(slices, "click", this.onClickArc.bind(this, plotEl, arc));
         if (this.labelFn) {
             slices.append("svg:title").text(this.labelFn);
@@ -196,7 +195,7 @@ var HierarchicalPieChart = /** @class */ (function () {
             targetArc = this.arcClickHistory.previous();
         }
         if (revert) {
-            svg.selectAll(".form")
+            svg.selectAll("path")
                 .filter(function (b) {
                 return (b.startAngle >= targetArc.startAngle &&
                     b.stopAngle <= targetArc.stopAngle &&
@@ -205,14 +204,14 @@ var HierarchicalPieChart = /** @class */ (function () {
                 .transition().duration(1000).style("opacity", "1").attr("pointer-events", "all");
         }
         else {
-            svg.selectAll(".form")
+            svg.selectAll("path")
                 .filter(function (b) {
                 return (b.startAngle < d.startAngle || b.stopAngle > d.stopAngle ||
                     b.level < d.level);
             })
                 .transition().duration(1000).style("opacity", "0").attr("pointer-events", "none");
         }
-        svg.selectAll(".form")
+        svg.selectAll("path")
             .filter(function (b) {
             return (b.startAngle >= d.startAngle &&
                 b.stopAngle <= d.stopAngle &&
