@@ -66,6 +66,7 @@ var HierarchicalPieChart = /** @class */ (function () {
         };
         this.plotWidth = options.plotWidth || 400;
         this.plotHeight = options.plotHeight || this.plotWidth;
+        this.legendPosition = options.legendPosition || 'bottom';
         this.animating = false;
         this.arcData = this.processData(this.data, 0, 0, 2 * Math.PI);
         this.arcClickHistory = new NavigationHistory([this.arcData[0]]);
@@ -75,16 +76,21 @@ var HierarchicalPieChart = /** @class */ (function () {
      */
     HierarchicalPieChart.prototype.render = function (el) {
         var _this = this;
-        if (!el.querySelector(".chart-legend")) {
-            var div = document.createElement('div');
-            div.setAttribute('class', 'chart-legend');
-            div.innerHTML = '<h2>&nbsp;</h2></p>&nbsp;</p>';
-            el.append(div);
-        }
         if (!el.querySelector(".chart-plot")) {
             var div = document.createElement('div');
             div.setAttribute('class', 'chart-plot');
             el.append(div);
+        }
+        if (!el.querySelector(".chart-legend")) {
+            var div = document.createElement('div');
+            div.setAttribute('class', 'chart-legend');
+            div.innerHTML = this.legendFn(this.data);
+            if (this.legendPosition == 'top') {
+                el.prepend(div);
+            }
+            else {
+                el.append(div);
+            }
         }
         var plotEl = el.querySelector(".chart-plot");
         var legendEl = el.querySelector(".chart-legend");
@@ -110,7 +116,7 @@ var HierarchicalPieChart = /** @class */ (function () {
             .attr("d", arc)
             .style("fill", function (d) { return _this.colorFn(d); })
             .attr("class", "form");
-        slices.on("click", this.onClickArc.bind(this, plotEl, arc));
+        this.d3on(slices, "click", this.onClickArc.bind(this, plotEl, arc));
         if (this.labelFn) {
             slices.append("svg:title").text(this.labelFn);
         }
@@ -123,8 +129,23 @@ var HierarchicalPieChart = /** @class */ (function () {
             var removeLegend = function () {
                 legend.transition().duration(1000).style("opacity", "0");
             };
-            slices.on("mouseover", updateLegend)
-                .on("mouseout", removeLegend);
+            this.d3on(slices, "mouseover", updateLegend);
+            this.d3on(slices, "mouseout", removeLegend);
+        }
+    };
+    /**
+     * Wrapper for `d3obj.on(evtName, fn)`
+     */
+    HierarchicalPieChart.prototype.d3on = function (d3obj, evtName, fn) {
+        var version = parseInt(this.d3.version.split('.')[0]);
+        if (version <= 5) {
+            d3obj.on(evtName, fn);
+        }
+        else {
+            d3obj.on(evtName, function () {
+                var args = Array.from(arguments).slice(1);
+                fn.apply(void 0, args);
+            });
         }
     };
     /**

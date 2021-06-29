@@ -59,7 +59,7 @@ For more examples, see `examples/` folder.
 
 ## Supported d3 versions
 
-This library supports d3 version 3 to version 5.
+This library supports d3 version 3 to version 6.
 
 ## Advanced Usage
 
@@ -77,7 +77,8 @@ const legendFn = (d) => {
   const description = d.description || "&nbsp;"
   return "<h2>" + name + "</h2><p>" + description + "</p>"
 }
-const chart = new HierarchicalPieChart(d3, data, { legendFn: legendFn })
+// legendPosition can be 'top' or 'bottom'
+const chart = new HierarchicalPieChart(d3, data, { legendFn: legendFn, legendPosition: 'top' })
 ```
 
 Custom label function (a label is the tooltip that appears when hovering the chart)

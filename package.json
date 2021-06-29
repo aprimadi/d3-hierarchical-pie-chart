@@ -1,12 +1,14 @@
 {
   "name": "d3-hierarchical-pie-chart",
   "author": "Armin Primadi",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "main": "dist/es5/index.js",
   "module": "dist/es6/index.js",
   "types": "dist/index.d.ts",
   "devDependencies": {
+    "browserify": "^17.0.0",
+    "np": "^7.5.0",
     "typescript": "^4.3.4"
   },
   "description": "d3-hierarchical-pie-chart =========================",
@@ -14,7 +16,7 @@
     "example": "examples"
   },
   "scripts": {
-    "compile": "rm -Rf dist && npx tsc && npx tsc --build tsconfig.es5.json && npx tsc --declaration --emitDeclarationOnly --outDir ./dist",
+    "compile": "rm -Rf dist && npx tsc && npx tsc --build tsconfig.es5.json && npx tsc --declaration --emitDeclarationOnly --outDir ./dist && npx browserify examples/index.js -o examples/bundle.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {

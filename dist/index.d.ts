@@ -1,15 +1,12 @@
-interface NodeType {
+export interface NodeType {
     name: string;
     description: string;
     value: number;
-    children: Array<NodeType>;
+    children?: Array<NodeType>;
 }
-interface ArcDatum {
+interface ArcDatum extends NodeType {
     startAngle: number;
     stopAngle: number;
-    name: string;
-    description: string;
-    value: number;
     level: number;
 }
 /**
@@ -42,22 +39,28 @@ declare class HierarchicalPieChart {
     currentArc?: ArcDatum;
     plotWidth: number;
     plotHeight: number;
-    labelFn: (d: ArcDatum) => string;
-    legendFn: (d: ArcDatum) => string;
-    colorFn: (d: ArcDatum) => string;
+    labelFn: (d: NodeType) => string;
+    legendFn: (d: NodeType) => string;
+    legendPosition: 'top' | 'bottom';
+    colorFn: (d: NodeType) => string;
     animating: boolean;
     arcClickHistory: NavigationHistory;
     constructor(d3: any, data: any, options?: {
         plotWidth?: number;
         plotHeight?: number;
-        labelFn?: (d: ArcDatum) => string;
-        legendFn?: (d: ArcDatum) => string;
-        colorFn?: (d: ArcDatum) => string;
+        labelFn?: (d: NodeType) => string;
+        legendFn?: (d: NodeType) => string;
+        legendPosition?: 'top' | 'bottom';
+        colorFn?: (d: NodeType) => string;
     });
     /**
      * Render hierarchical pie chart on a given element.
      */
     render(el: HTMLElement): void;
+    /**
+     * Wrapper for `d3obj.on(evtName, fn)`
+     */
+    private d3on;
     /**
      * Interpolates arc during animation.
      */

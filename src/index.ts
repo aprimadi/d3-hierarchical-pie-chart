@@ -1,15 +1,12 @@
-interface NodeType {
+export interface NodeType {
   name: string,
   description: string,
   value: number,
-  children: Array<NodeType>,
+  children?: Array<NodeType>,
 }
-interface ArcDatum {
+interface ArcDatum extends NodeType {
   startAngle: number,
   stopAngle: number,
-  name: string,
-  description: string,
-  value: number,
   level: number,
 }
 
@@ -74,9 +71,10 @@ class HierarchicalPieChart {
   currentArc?: ArcDatum
   plotWidth: number
   plotHeight: number
-  labelFn:  (d: ArcDatum) => string
-  legendFn: (d: ArcDatum) => string
-  colorFn:  (d: ArcDatum) => string
+  labelFn:  (d: NodeType) => string
+  legendFn: (d: NodeType) => string
+  legendPosition: 'top' | 'bottom'
+  colorFn:  (d: NodeType) => string
   animating: boolean
   // Stores arc-click navigation (history of which arc are being selected).
   arcClickHistory: NavigationHistory
@@ -87,25 +85,27 @@ class HierarchicalPieChart {
     options: {
       plotWidth?: number,
       plotHeight?: number,
-      labelFn?: (d: ArcDatum) => string, 
-      legendFn?: (d: ArcDatum) => string, 
-      colorFn?: (d: ArcDatum) => string,
+      labelFn?: (d: NodeType) => string, 
+      legendFn?: (d: NodeType) => string,
+      legendPosition?: 'top' | 'bottom',
+      colorFn?: (d: NodeType) => string,
     } = {},
   ) {
     this.d3 = d3
     this.data = data
-    this.labelFn = options.labelFn || function(d: ArcDatum) { return d.name + ": " + d.description }
-    this.legendFn = options.legendFn || function(d: ArcDatum) {
+    this.labelFn = options.labelFn || function(d: NodeType) { return d.name + ": " + d.description }
+    this.legendFn = options.legendFn || function(d: NodeType) {
       const name = d.name || "&nbsp;"
       const description = d.description || "&nbsp;"
       return "<h2>" + name + "</h2><p>" + description + "</p>"
     }
     const color = d3.scaleOrdinal(d3.schemeTableau10)
-    this.colorFn = options.colorFn || function(d: ArcDatum) {
+    this.colorFn = options.colorFn || function(d: NodeType) {
       return color(d.name)
     }
     this.plotWidth = options.plotWidth || 400
     this.plotHeight = options.plotHeight || this.plotWidth
+    this.legendPosition = options.legendPosition || 'bottom'
     this.animating = false
 
     this.arcData = this.processData(this.data, 0, 0, 2 * Math.PI)
@@ -116,16 +116,20 @@ class HierarchicalPieChart {
    * Render hierarchical pie chart on a given element.
    */
   render(el: HTMLElement) {
-    if (!el.querySelector(".chart-legend")) {
-      const div = document.createElement('div')
-      div.setAttribute('class', 'chart-legend')
-      div.innerHTML = '<h2>&nbsp;</h2></p>&nbsp;</p>'
-      el.append(div)
-    }
     if (!el.querySelector(".chart-plot")) {
       const div = document.createElement('div')
       div.setAttribute('class', 'chart-plot')
       el.append(div)
+    }
+    if (!el.querySelector(".chart-legend")) {
+      const div = document.createElement('div')
+      div.setAttribute('class', 'chart-legend')
+      div.innerHTML = this.legendFn(this.data)
+      if (this.legendPosition == 'top') {
+        el.prepend(div)
+      } else {
+        el.append(div)
+      }
     }
     const plotEl = el.querySelector(".chart-plot")
     const legendEl = el.querySelector(".chart-legend")
@@ -159,7 +163,7 @@ class HierarchicalPieChart {
       .style("fill", (d: ArcDatum) => this.colorFn(d))
       .attr("class", "form")
 
-    slices.on("click", this.onClickArc.bind(this, plotEl, arc))
+    this.d3on(slices, "click", this.onClickArc.bind(this, plotEl, arc))
 
     if (this.labelFn) {
       slices.append("svg:title").text(this.labelFn)
@@ -174,8 +178,23 @@ class HierarchicalPieChart {
         legend.transition().duration(1000).style("opacity","0")
       }
 
-      slices.on("mouseover", updateLegend)
-            .on("mouseout", removeLegend)
+      this.d3on(slices, "mouseover", updateLegend)
+      this.d3on(slices, "mouseout", removeLegend)
+    }
+  }
+
+  /**
+   * Wrapper for `d3obj.on(evtName, fn)`
+   */
+  private d3on(d3obj: any, evtName: string, fn: Function) {
+    const version = parseInt(this.d3.version.split('.')[0])
+    if (version <= 5) {
+      d3obj.on(evtName, fn)
+    } else {
+      d3obj.on(evtName, function() {
+        const args = Array.from(arguments).slice(1)
+        fn(...args)
+      })
     }
   }
 

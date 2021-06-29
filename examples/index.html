@@ -19,17 +19,9 @@ body {
 }
 </style>
 <head>
-  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="https://d3js.org/d3.v6.min.js"></script>
   <script type="text/javascript" src="data.js"></script>
-  <script type="text/javascript" src="../dist/index.js"></script>
-  <script type="text/javascript">
-    function init() {
-      const chart = new HierarchicalPieChart(d3, data)
-      chart.render(document.querySelector("#chart"))
-    }
-
-    window.onload = init
-  </script>
+  <script type="text/javascript" src="bundle.js"></script>
 </head>
 <body>
   <p>Click on a segment to get a zoomed-in view of its children.<br />Check out the full example <a href="http://www.andreas-dewes.de/code_is_beautiful" target="_blank">here</a>.</p>

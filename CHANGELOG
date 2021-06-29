@@ -1,0 +1,13 @@
+1.0.0
+=====
+
+- Initial version
+
+1.0.1
+=====
+
+- Export NodeType (typescript declaration)
+- Fix legend rendering
+- Allow top or bottom legend
+- Support d3 v6
+
