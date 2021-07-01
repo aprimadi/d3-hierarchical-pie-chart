@@ -144,7 +144,8 @@ var HierarchicalPieChart = /** @class */ (function () {
             d3obj.on(evtName, fn);
         }
         else {
-            d3obj.on(evtName, function () {
+            d3obj.on(evtName, function (evt) {
+                evt.stopPropagation();
                 var args = Array.from(arguments).slice(1);
                 fn.apply(void 0, args);
             });

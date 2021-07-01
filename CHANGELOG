@@ -22,3 +22,8 @@
 
 - Fix paths are rendered multiple times on re-render
 
+1.0.4
+=====
+
+- Stop event propagation on d3 v6
+

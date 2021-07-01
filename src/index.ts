@@ -192,7 +192,8 @@ class HierarchicalPieChart {
     if (version <= 5) {
       d3obj.on(evtName, fn)
     } else {
-      d3obj.on(evtName, function() {
+      d3obj.on(evtName, function(evt: any) {
+        evt.stopPropagation()
         const args = Array.from(arguments).slice(1)
         fn(...args)
       })
